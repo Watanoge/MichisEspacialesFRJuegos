@@ -10,15 +10,28 @@ public class CharacterStatus : MonoBehaviour
 
     private void Start()
     {
-        //Si esta bloqueado se muestra el boton para comprar personaje
-        if (isLocked)
-        {
-            botonComprar.SetActive(true);
-        }
-        //Si no el boton se oculta
-        else
-        {
-            botonComprar.SetActive(false);
-        }
+        //Antes:
+        // //Si esta bloqueado se muestra el boton para comprar personaje
+        // if (isLocked)
+        // {
+        //     botonComprar.SetActive(true);
+        // }
+        // //Si no el boton se oculta
+        // else
+        // {
+        //     botonComprar.SetActive(false);
+        // }
+
+        //Nuevo:
+        botonComprar.SetActive(isLocked);
+
+        /*
+        Si te fijas, el valor de activado de botonComprar es el valor de isLocked
+        Poner directamente isLocked, regresa true o false, dependiendo su valor. Poner !bool regresa el inverso
+        (si bool es falso, regresa verdadero, y si es verdadero regresará falso)
+
+        En este caso, el código se puede simplificar de esta manera saltandose el if/else y directamente
+        asignando el valor de isLocked
+        */
     }
 }

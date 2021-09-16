@@ -10,9 +10,14 @@ public class CharacterSkin : MonoBehaviour
     //Numero de skin que tiene seleccionado el personaje
     [HideInInspector] public int skinNumber = 0;
 
-    void Update()
+    // Original:
+    // void Update()
+
+    // Nuevo:
+    public void UpdateSkin()
     {
         //Se actualiza la skin dependiendo del numero seleccionado
         gameObject.GetComponentInChildren<Image>().color = skins[skinNumber];
     }
+    //Explicación en "ChangeSkinButtons"
 }

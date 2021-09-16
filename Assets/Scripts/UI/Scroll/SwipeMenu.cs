@@ -16,13 +16,16 @@ public class SwipeMenu : MonoBehaviour
     //Variable que guarda el GameObject que esta seleccionado en el scroll
     [HideInInspector] public GameObject currentlySelection;
 
-    void Update()
-    {
+    [HideInInspector] public BlockSelectCharacterButton blockSelectCharacterButton;
+
+    private float distance;
+
+    void Start(){
         //Se guardan todos los hijos que contiene el GameObject content en el array de pos
         pos = new float[transform.childCount];
         //Se crea una variable llamada distance que sera la distancia que hay entre cada
         //hijo de content
-        float distance = 1f / (pos.Length - 1f);
+        distance = 1f / (pos.Length - 1f);
 
         //En este ciclo for se guardan las posiciones en el array pos
         //en cada lugar que le corresponde
@@ -30,6 +33,30 @@ public class SwipeMenu : MonoBehaviour
         {
             pos[i] = distance * i;
         }
+    }
+
+    void Update()
+    {
+        //Antes:
+
+        /*
+            //Se guardan todos los hijos que contiene el GameObject content en el array de pos
+            pos = new float[transform.childCount];
+            //Se crea una variable llamada distance que sera la distancia que hay entre cada
+            //hijo de content
+            float distance = 1f / (pos.Length - 1f);
+
+            //En este ciclo for se guardan las posiciones en el array pos
+            //en cada lugar que le corresponde
+            for (int i = 0; i < pos.Length; i++)
+            {
+                pos[i] = distance * i;
+            }
+        */
+
+        //Se movió al Start, no veo necesidad de declarar un nuevo array cada frame y menos si
+        //el menú ya está creado y no es procedural. Igual algo estoy entendiendo mal, pero si mis
+        //cuentas no me fallan, con que se ejecute en el primer frame es suficiente
 
         //Mientras se este tocando la pantalla
         if (Input.GetMouseButton(0))
@@ -54,6 +81,9 @@ public class SwipeMenu : MonoBehaviour
                     {
                         //Se guarda la variable dependiendo en que hijo del Content se esta viendo
                         currentlySelection = transform.GetChild(i).gameObject;
+
+                        //Nuevo:
+                        blockSelectCharacterButton.BlockButton(); //Una vez se tenga el valor de currentlySelection, se invoca la función de BlockButton
                     }
                 }
             }

@@ -28,6 +28,16 @@ public class ChangeSkinButtons : MonoBehaviour
         {
             characterSkin.skinNumber = 0;
         }
+
+        //Nuevo:
+        characterSkin.UpdateSkin();
+        /*
+            Antes el Update de CharacterSkin se encargaba de actualizar *cada frame* el color de la skin,
+            siendo esto total y absolutamente innecesario (sin contar que tenerlo a parte en CADA GAME OBJECT
+            es una pérdida estúpida de recursos) ya que en esta misma función de Next/Last Skin se tiene referencia
+            directa al componente y se puede ejecutar una función personalizada para actualizar la skin en lugar
+            de hacerlo cada frame
+        */
     }
 
     //Esta funcion se coloca en el boton para cambiar a la skin anterior
@@ -44,5 +54,7 @@ public class ChangeSkinButtons : MonoBehaviour
         {
             characterSkin.skinNumber = characterSkin.skins.Length - 1;
         }
+
+        characterSkin.UpdateSkin();
     }
 }

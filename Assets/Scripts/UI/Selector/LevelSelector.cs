@@ -18,6 +18,18 @@ public class LevelSelector : MonoBehaviour
     //Nivel siguiente al nivel seleccionado
     [HideInInspector] public GameObject nextLevel;
 
+    // public ShowLevelSelectedName selectedName;
+    //Nuevo:
+    //Se declara quién es "selectedName" para después invocar la nueva función
+    public void DeclareSelectedName(ShowLevelSelectedName newSelectedName){
+        // selectedName = newSelectedName;
+    }
+
+    //Igual se declara quién es "previousAndNextLevelButtons" para invocar su nueva función
+    public PreviousAndNextLevelButtons previousAndNextLevelButtons;
+    public void DeclarePreviousAndNextLevelButtons(PreviousAndNextLevelButtons newPreviousAndNextLevelButtons){
+        previousAndNextLevelButtons = newPreviousAndNextLevelButtons;
+    }
     void Start()
     {
         //La variable "firstLevel" se iguala al primer hijo de la lista "levelsList"
@@ -28,16 +40,36 @@ public class LevelSelector : MonoBehaviour
         currentlyLevel = levelsList.transform.GetChild(0).gameObject;
         //Se anima el nivel seleccionado aumentando su escala a 1.5 con un loop ping pong
         currentlyLevel.transform.LeanScale(Vector3.one * 1.5f, 0.5f).setLoopPingPong();
-    }
-    private void Update()
-    {
-        //Se llama a las siguiente funciones
+        
+        //Nuevo:
         SetPreviousLevel();
         SetNextLevel();
+        SetPreviousLevel();
+        UpdateTexts();
+        //Se ejecuta la nueva función para actualizar los textos 
+    }
+
+    //Antes:
+    // private void Update()
+    // {
+    //     //Se llama a las siguiente funciones
+    //     SetPreviousLevel();
+    //     SetNextLevel();
+    // }
+
+    //Se borra esto ya que se usan las referencias existentes del script "PreviousAndNextLevelButtons"
+
+    //Nuevo:
+    public void UpdateTexts(){
+        // selectedName.UpdateText();
+        previousAndNextLevelButtons.UpdateText();
+        //Esto evita que tanto previous blablabla utilicen el update para actualizar los textos
+        //que solo debe actualizarse al cambiarse los nombres
     }
 
     //Funcion que define la variable "previousLevel"
-    private void SetPreviousLevel()
+    //Nuevo: se volvieron públicas para poder ser ejecutadas por evento
+    public void SetPreviousLevel()
     {
         //Si antes del GameObject "currentlyLevel" existe otro GameObject se ejecuta esta parte
         if (currentlyLevel.transform.GetSiblingIndex() - 1 > -1)
@@ -51,10 +83,27 @@ public class LevelSelector : MonoBehaviour
         {
             previousLevel = null;
         }
+
+        /*
+            Nota: esto se puede convertir en un ternario de la siguiente manera:
+
+            bool previousLevelExists = currentlyLevel.transform.GetSiblingIndex() - 1 > -1;
+            previousLevel = previousLevelExists ? levelsList.transform.GetChild(currentlyLevel.transform.GetSiblingIndex() - 1).gameObject : null;
+
+            Los ternarios funcionan así:
+            (condición) ? (retorno de valor en caso de true) : (retorno de valor en caso de false)
+
+            Esto te evita esos if/else para asignar valores de A o B dependiendo de una condición
+        */
+
+        //Nuevo:
+        UpdateTexts();
+        //Se ejecuta la nueva función para actualizar los textos 
     }
 
     //Funcion que define la variable "nextLevel"
-    private void SetNextLevel()
+    //Nuevo: se volvieron públicas para poder ser ejecutadas por evento
+    public void SetNextLevel()
     {
         //Si desoues del GameObject "currentlyLevel" existe otro GameObject se ejecuta esta parte
         if (currentlyLevel.transform.GetSiblingIndex() + 1 < levelsList.transform.childCount)
@@ -68,5 +117,9 @@ public class LevelSelector : MonoBehaviour
         {
             nextLevel = null;
         }
+        
+        //Nuevo:
+        UpdateTexts();
+        //Se ejecuta la nueva función para actualizar los textos 
     }
 }
